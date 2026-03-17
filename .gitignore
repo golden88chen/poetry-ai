@@ -1,0 +1,14 @@
+# 依赖
+node_modules/
+.DS_Store
+
+# 日志
+*.log
+
+# 环境变量（重要！保护 API 密钥）
+.env
+.env.local
+
+# 临时文件
+*.tmp
+*.swp

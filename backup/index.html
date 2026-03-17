@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>诗魂续作：AI 古诗今唱</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      font-size: 1.2em;
+    }
+    
+    .section {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      border-left: 4px solid #4CAF50;
+      display: none;
+    }
+    
+    .result h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .poetry {
+      font-size: 18px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>诗魂续作：AI 古诗今唱</h1>
+      <p class="subtitle">与古代诗人合作，共创经典诗作</p>
+    </header>
+    
+    <!-- 古诗续作部分 -->
+    <div class="section">
+      <h2>古诗续作</h2>
+      <div class="form-group">
+        <label for="line">输入上句诗：</label>
+        <input type="text" id="line" placeholder="例如：床前明月光">
+      </div>
+      <div class="form-group">
+        <label for="style">选择风格：</label>
+        <select id="style">
+          <option value="">请选择</option>
+          <option value="李白式豪放">李白式豪放</option>
+          <option value="李清照式婉约">李清照式婉约</option>
+          <option value="杜甫式沉郁">杜甫式沉郁</option>
+          <option value="苏轼式豪放">苏轼式豪放</option>
+          <option value="王维式田园">王维式田园</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="theme">选择主题：</label>
+        <select id="theme">
+          <option value="">请选择</option>
+          <option value="思乡">思乡</option>
+          <option value="咏物">咏物</option>
+          <option value="送别">送别</option>
+          <option value="山水">山水</option>
+        </select>
+      </div>
+      <button onclick="continuePoetry()">生成续句</button>
+      <div id="poetryResult" class="result">
+        <h3>生成结果</h3>
+        <div class="poetry" id="poetryContent"></div>
+      </div>
+    </div>
+    
+    <!-- 图片分析写诗部分 -->
+    <div class="section">
+      <h2>图片分析写诗</h2>
+      <div class="form-group">
+        <label for="image">选择图片：</label>
+        <input type="file" id="image" accept="image/*">
+      </div>
+      <div class="form-group">
+        <label for="imageStyle">选择诗风：</label>
+        <select id="imageStyle">
+          <option value="">请选择</option>
+          <option value="李白式豪放">李白式豪放</option>
+          <option value="李清照式婉约">李清照式婉约</option>
+          <option value="杜甫式沉郁">杜甫式沉郁</option>
+          <option value="苏轼式豪放">苏轼式豪放</option>
+          <option value="王维式田园">王维式田园</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="imageTheme">选择主题：</label>
+        <select id="imageTheme">
+          <option value="">请选择</option>
+          <option value="思乡">思乡</option>
+          <option value="咏物">咏物</option>
+          <option value="送别">送别</option>
+          <option value="山水">山水</option>
+        </select>
+      </div>
+      <button onclick="generateImagePoetry()">生成诗歌</button>
+      <div id="imagePoetryResult" class="result">
+        <h3>生成结果</h3>
+        <div class="poetry" id="imagePoetryContent"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // ============================================
+    // DeepSeek API 配置说明
+    // ============================================
+    // 获取 API 密钥步骤：
+    // 1. 访问 DeepSeek 官网：https://www.deepseek.com/
+    // 2. 注册或登录账号
+    // 3. 进入控制台/API 管理页面
+    // 4. 创建新的 API Key
+    // 5. 将获取到的 API Key 填入下方
+    // ============================================
+    
+    const DEEPSEEK_API_KEY = 'sk-9698f556197044699183e3ce465be006'; // ⚠️ 请在此处填入您的 DeepSeek API 密钥
+    const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+    // 古诗续作功能 - 调用 DeepSeek API
+    async function continuePoetry() {
+      const line = document.getElementById('line').value;
+      const style = document.getElementById('style').value;
+      const theme = document.getElementById('theme').value;
+      
+      console.log('输入值:', { line, style, theme });
+      
+      if (!line) {
+        alert('请输入上句诗');
+        return;
+      }
+      
+      // 显示加载状态
+      const button = document.querySelector('button[onclick="continuePoetry()"]');
+      const originalText = button.textContent;
+      button.textContent = 'DeepSeek 思考中...';
+      button.disabled = true;
+      
+      try {
+        // 构建提示词
+        let prompt = `请根据上句诗"${line}"`;
+        
+        if (style) {
+          prompt += `，以${style}的风格`;
+        }
+        
+        if (theme) {
+          prompt += `，围绕"${theme}"的主题`;
+        }
+        
+        prompt += `，续写下一句诗。要求：
+1. 符合古诗的格律和意境
+2. 语言优美，符合古诗的断句规则
+3. 结合所选诗人的风格特点
+4. 与上句诗在字数和结构上保持对称
+5. 上句有${line.length}字，续句也应该有${line.length}字
+6. 只输出续句部分，不要包含上句
+
+请直接输出续句内容，不要有其他说明。`;
+
+        console.log('发送给 DeepSeek 的提示词:', prompt);
+        
+        // 调用 DeepSeek API
+        const response = await fetch(DEEPSEEK_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              {
+                role: 'system',
+                content: '你是一位精通中国古典诗词的 AI 助手，擅长模仿不同诗人的风格创作诗句。请确保生成的诗句符合古诗的格律和意境，语言优美。'
+              },
+              {
+                role: 'user',
+                content: prompt
+              }
+            ],
+            max_tokens: 50,
+            temperature: 0.7
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API 请求失败：${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('DeepSeek 响应:', data);
+        
+        // 提取生成的续句
+        let continuation = data.choices[0].message.content.trim();
+        console.log('DeepSeek 生成结果:', continuation);
+        
+        // 清理结果，移除多余内容
+        continuation = continuation.replace(/[，。！？]/g, '').trim();
+        
+        // 确保长度对称
+        if (continuation.length > line.length) {
+          continuation = continuation.substring(0, line.length);
+        }
+        
+        const result = line + "，" + continuation + "。";
+        console.log('最终结果:', result);
+        
+        // 显示结果
+        const poetryContent = document.getElementById('poetryContent');
+        const poetryResult = document.getElementById('poetryResult');
+        
+        if (poetryContent && poetryResult) {
+          poetryContent.textContent = result;
+          poetryResult.style.display = 'block';
+          console.log('✓ 结果显示成功');
+        } else {
+          console.error('✗ 元素未找到');
+        }
+        
+      } catch (error) {
+        console.error('生成失败:', error);
+        alert('生成失败：' + error.message + '\n\n请确保已配置正确的 DeepSeek API 密钥。');
+      } finally {
+        // 恢复按钮状态
+        button.textContent = originalText;
+        button.disabled = false;
+      }
+    }
+    
+    // 图片分析写诗功能 - 调用 DeepSeek API
+    async function generateImagePoetry() {
+      const imageInput = document.getElementById('image');
+      const style = document.getElementById('imageStyle').value;
+      const theme = document.getElementById('imageTheme').value;
+      
+      if (!imageInput.files || !imageInput.files[0]) {
+        alert('请选择图片');
+        return;
+      }
+      
+      const imageFile = imageInput.files[0];
+      
+      // 检查文件大小（限制 5MB）
+      if (imageFile.size > 5 * 1024 * 1024) {
+        alert('图片大小不能超过 5MB');
+        return;
+      }
+      
+      // 显示加载状态
+      const button = document.querySelector('button[onclick="generateImagePoetry()"]');
+      const originalText = button.textContent;
+      button.textContent = 'DeepSeek 分析中...';
+      button.disabled = true;
+      
+      try {
+        // 读取图片并转换为 Base64
+        const base64Image = await readFileAsBase64(imageFile);
+        console.log('图片已加载，大小:', imageFile.size);
+        
+        // 构建提示词
+        let prompt = `请分析这张图片，`;
+        
+        if (style) {
+          prompt += `以${style}的风格，`;
+        }
+        
+        if (theme) {
+          prompt += `围绕"${theme}"的主题，`;
+        }
+        
+        prompt += `创作一首古诗。要求：
+1. 符合古诗的格律和意境
+2. 语言优美，使用古诗风格的词汇
+3. 结合所选诗人的风格特点
+4. 体现图片中的场景和情感
+5. 生成一首完整的诗（4 句）
+
+请直接输出诗歌内容，不要有其他说明。`;
+
+        console.log('发送给 DeepSeek 的提示词:', prompt);
+        
+        // 调用 DeepSeek API（使用 Base64 图片）
+        const response = await fetch(DEEPSEEK_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              {
+                role: 'system',
+                content: '你是一位精通中国古典诗词的 AI 助手，擅长根据画面意境创作古诗。请确保生成的诗句符合古诗的格律和意境，语言优美。'
+              },
+              {
+                role: 'user',
+                content: [
+                  {
+                    type: 'text',
+                    text: prompt
+                  },
+                  {
+                    type: 'image_url',
+                    image_url: {
+                      url: base64Image
+                    }
+                  }
+                ]
+              }
+            ],
+            max_tokens: 200,
+            temperature: 0.7
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API 请求失败：${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('DeepSeek 响应:', data);
+        
+        // 提取生成的诗歌
+        let poetry = data.choices[0].message.content.trim();
+        console.log('DeepSeek 生成结果:', poetry);
+        
+        // 显示结果
+        const imagePoetryContent = document.getElementById('imagePoetryContent');
+        const imagePoetryResult = document.getElementById('imagePoetryResult');
+        
+        if (imagePoetryContent && imagePoetryResult) {
+          imagePoetryContent.textContent = poetry;
+          imagePoetryResult.style.display = 'block';
+          console.log('✓ 图片诗歌显示成功');
+        } else {
+          console.error('✗ 元素未找到');
+        }
+        
+      } catch (error) {
+        console.error('生成失败:', error);
+        // 如果 DeepSeek 不支持图片，使用文字描述生成
+        if (error.message.includes('400') || error.message.includes('image')) {
+          console.log('尝试使用文字描述生成...');
+          await generatePoetryFromDescription(style, theme);
+        } else {
+          alert('生成失败：' + error.message + '\n\n请确保已配置正确的 DeepSeek API 密钥。');
+        }
+      } finally {
+        // 恢复按钮状态
+        button.textContent = originalText;
+        button.disabled = false;
+      }
+    }
+    
+    // 读取文件为 Base64
+    function readFileAsBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    
+    // 使用文字描述生成诗歌（备用方案）
+    async function generatePoetryFromDescription(style, theme) {
+      const button = document.querySelector('button[onclick="generatePoetryFromDescription()"]') || 
+                     document.querySelector('button[onclick="generateImagePoetry()"]');
+      const originalText = button ? button.textContent : '生成诗歌';
+      
+      if (button) {
+        button.textContent = 'DeepSeek 创作中...';
+        button.disabled = true;
+      }
+      
+      try {
+        // 构建提示词
+        let prompt = `请创作一首古诗，`;
+        
+        if (style) {
+          prompt += `以${style}的风格，`;
+        }
+        
+        if (theme) {
+          prompt += `围绕"${theme}"的主题，`;
+        }
+        
+        prompt += `。要求：
+1. 符合古诗的格律和意境
+2. 语言优美，使用古诗风格的词汇
+3. 结合所选诗人的风格特点
+4. 生成一首完整的诗（4 句）
+
+请直接输出诗歌内容，不要有其他说明。`;
+
+        console.log('发送给 DeepSeek 的提示词（文字描述）:', prompt);
+        
+        // 调用 DeepSeek API
+        const response = await fetch(DEEPSEEK_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              {
+                role: 'system',
+                content: '你是一位精通中国古典诗词的 AI 助手，擅长创作古诗。请确保生成的诗句符合古诗的格律和意境，语言优美。'
+              },
+              {
+                role: 'user',
+                content: prompt
+              }
+            ],
+            max_tokens: 200,
+            temperature: 0.7
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API 请求失败：${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('DeepSeek 响应:', data);
+        
+        // 提取生成的诗歌
+        let poetry = data.choices[0].message.content.trim();
+        console.log('DeepSeek 生成结果:', poetry);
+        
+        // 显示结果
+        const imagePoetryContent = document.getElementById('imagePoetryContent');
+        const imagePoetryResult = document.getElementById('imagePoetryResult');
+        
+        if (imagePoetryContent && imagePoetryResult) {
+          imagePoetryContent.textContent = poetry;
+          imagePoetryResult.style.display = 'block';
+          console.log('✓ 图片诗歌显示成功（文字描述版）');
+        }
+        
+      } catch (error) {
+        console.error('生成失败:', error);
+        alert('生成失败：' + error.message);
+      } finally {
+        if (button) {
+          button.textContent = originalText;
+          button.disabled = false;
+        }
+      }
+    }
+  </script>
+</body>
+</html>

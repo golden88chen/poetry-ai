@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>诗魂续作：AI古诗今唱</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    
+    .section {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      border-left: 4px solid #4CAF50;
+      display: none;
+    }
+    
+    .result h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .poetry {
+      font-size: 18px;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>诗魂续作：AI古诗今唱</h1>
+      <p>与古代诗人合作，共创经典诗作</p>
+    </header>
+    
+    <!-- 古诗续作部分 -->
+    <div class="section">
+      <h2>古诗续作</h2>
+      <div class="form-group">
+        <label for="line">输入上句诗：</label>
+        <input type="text" id="line" placeholder="例如：床前明月光">
+      </div>
+      <div class="form-group">
+        <label for="style">选择风格：</label>
+        <select id="style">
+          <option value="李白式豪放">李白式豪放</option>
+          <option value="李清照式婉约">李清照式婉约</option>
+          <option value="杜甫式沉郁">杜甫式沉郁</option>
+          <option value="苏轼式豪放">苏轼式豪放</option>
+          <option value="王维式田园">王维式田园</option>
+        </select>
+      </div>
+      <button onclick="continuePoetry()">生成续句</button>
+      <div id="poetryResult" class="result">
+        <h3>生成结果</h3>
+        <div class="poetry" id="poetryContent"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // 模拟数据
+    const mockData = {
+      "床前明月光": {
+        "李白式豪放": "床前明月光，疑是地上霜。",
+        "李清照式婉约": "床前明月光，人比黄花瘦。",
+        "杜甫式沉郁": "床前明月光，故国梦难忘。",
+        "苏轼式豪放": "床前明月光，把酒问青天。",
+        "王维式田园": "床前明月光，松间照清泉。"
+      },
+      "飞流直下三千尺": {
+        "李白式豪放": "飞流直下三千尺，疑是银河落九天。",
+        "李清照式婉约": "飞流直下三千尺，人在画楼西畔。",
+        "杜甫式沉郁": "飞流直下三千尺，国破山河在。",
+        "苏轼式豪放": "飞流直下三千尺，大江东去浪淘尽。",
+        "王维式田园": "飞流直下三千尺，清泉石上流。"
+      }
+    };
+
+    // 古诗续作功能
+    function continuePoetry() {
+      const line = document.getElementById('line').value;
+      const style = document.getElementById('style').value;
+      
+      if (!line) {
+        alert('请输入上句诗');
+        return;
+      }
+      
+      // 显示加载状态
+      const button = document.querySelector('button[onclick="continuePoetry()"]');
+      const originalText = button.textContent;
+      button.textContent = '生成中...';
+      button.disabled = true;
+      
+      // 模拟API调用
+      setTimeout(() => {
+        let result = '';
+        
+        // 查找模拟数据
+        if (mockData[line] && mockData[line][style]) {
+          result = mockData[line][style];
+        } else if (mockData[line]) {
+          // 如果没有对应风格，使用第一种风格
+          const firstStyle = Object.keys(mockData[line])[0];
+          result = mockData[line][firstStyle];
+        } else {
+          // 没有匹配数据，使用默认值
+          result = line + "，生成成功。";
+        }
+        
+        // 显示结果
+        console.log('生成结果:', result);
+        const poetryContent = document.getElementById('poetryContent');
+        const poetryResult = document.getElementById('poetryResult');
+        
+        if (poetryContent && poetryResult) {
+          poetryContent.textContent = result;
+          poetryResult.style.display = 'block';
+          console.log('结果区域显示成功');
+        } else {
+          console.error('元素未找到:', { poetryContent, poetryResult });
+        }
+        
+        // 恢复按钮状态
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

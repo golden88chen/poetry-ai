@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试生成功能</title>
+  <style>
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      border-left: 4px solid #4CAF50;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>测试生成功能</h1>
+  <input type="text" id="line" placeholder="输入上句诗" value="床前明月光">
+  <select id="style">
+    <option value="李白式豪放">李白式豪放</option>
+  </select>
+  <button onclick="testContinuePoetry()">生成续句</button>
+  <div id="poetryResult" class="result">
+    <h3>生成结果</h3>
+    <div id="poetryContent"></div>
+  </div>
+  
+  <script>
+    const mockData = {
+      continuePoetry: {
+        "床前明月光": {
+          "李白式豪放": "床前明月光，疑是地上霜。"
+        }
+      }
+    };
+    
+    function testContinuePoetry() {
+      const line = document.getElementById('line').value;
+      const style = document.getElementById('style').value;
+      
+      console.log('输入:', line, style);
+      
+      // 模拟生成
+      setTimeout(() => {
+        let result = '';
+        
+        if (mockData.continuePoetry[line] && mockData.continuePoetry[line][style]) {
+          result = mockData.continuePoetry[line][style];
+        } else {
+          result = line + "，生成失败。";
+        }
+        
+        console.log('结果:', result);
+        document.getElementById('poetryContent').textContent = result;
+        document.getElementById('poetryResult').style.display = 'block';
+      }, 500);
+    }
+  </script>
+</body>
+</html>

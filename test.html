@@ -1,0 +1,49 @@
+const DEEPSEEK_API_KEY = 'sk-your-api-key-here'; // 替换为您的真实密钥const DEEPSEEK_API_KEY = 'sk-your-api-key-here'; // 替换为您的真实密钥const DEEPSEEK_API_KEY = 'sk-your-api-key-here'; // 替换为您的真实密钥<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试生成结果</title>
+  <style>
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      border-left: 4px solid #4CAF50;
+      display: none;
+    }
+    .poetry {
+      font-size: 18px;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <h1>测试生成结果</h1>
+  <input type="text" id="line" placeholder="输入上句诗">
+  <button onclick="testGenerate()">生成续句</button>
+  <div id="poetryResult" class="result">
+    <h3>生成结果</h3>
+    <div class="poetry" id="poetryContent"></div>
+  </div>
+  
+  <script>
+    function testGenerate() {
+      const line = document.getElementById('line').value;
+      if (!line) {
+        alert('请输入上句诗');
+        return;
+      }
+      
+      // 模拟生成结果
+      setTimeout(() => {
+        const result = line + "，疑是地上霜。";
+        document.getElementById('poetryContent').textContent = result;
+        document.getElementById('poetryResult').style.display = 'block';
+        console.log('生成结果显示成功');
+      }, 500);
+    }
+  </script>
+</body>
+</html>
