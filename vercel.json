@@ -1,4 +1,5 @@
 {
   "buildCommand": "mkdir -p dist && cp -r public/* dist/",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "installCommand": "echo 'Skipping npm install for static site'"
 }
